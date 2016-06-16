@@ -1,6 +1,7 @@
 ---
 title: redis-cluster集群搭建
 date: 2016-05-19 15:08:05
+categories: 缓存
 tags: redis
 ---
 ### 下载

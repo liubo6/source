@@ -1,6 +1,7 @@
 ---
 title: zookeeper集群配置
 date: 2016-05-19 11:35:04
+categories: 中间件
 tags: 集群
 ---
 

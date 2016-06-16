@@ -1,6 +1,7 @@
 ---
 title: RPC框架对比
 date: 2016-05-19 16:31:25
+categories: RPC
 tags: RPC
 ---
 ## RPC框架比较

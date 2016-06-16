@@ -1,6 +1,7 @@
 ---
 title: Kafka集群搭建-quickstart
 date: 2016-06-16 10:52:14
+categories: 中间件
 tags: kafka
 ---
 
