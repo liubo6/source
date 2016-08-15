@@ -100,9 +100,53 @@ VOLUME ["/data"]
 避免在Dockerfile中映射公有端口
 `CMD`与`ENTRYPOINT`命令请使用数组语法
 
+## 示例 java
+```
+FROM ubuntu:16.04
+MAINTAINER liubo <917551811@qq.com>
+
+ENV DEBIAN_FRONTEND noninteractive
+
+ENV VERSION 8
+ENV UPDATE 102
+ENV BUILD 14
+
+ENV JAVA_HOME /usr/lib/jvm/java-${VERSION}-oracle
+ENV JRE_HOME ${JAVA_HOME}/jre
+
+ENV OPENSSL_VERSION 1.0.2h
+
+RUN apt-get update && apt-get install ca-certificates curl \
+        gcc libc6-dev libssl-dev make \
+        -y --no-install-recommends && \
+    curl --silent --location --retry 3 --cacert /etc/ssl/certs/GeoTrust_Global_CA.pem \
+    --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
+    http://download.oracle.com/otn-pub/java/jdk/"${VERSION}"u"${UPDATE}"-b"${BUILD}"/server-jre-"${VERSION}"u"${UPDATE}"-linux-x64.tar.gz \
+    | tar xz -C /tmp && \
+    mkdir -p /usr/lib/jvm && mv /tmp/jdk1.${VERSION}.0_${UPDATE} "${JAVA_HOME}" && \
+    curl --silent --location --retry 3 --cacert /etc/ssl/certs/GlobalSign_Root_CA.pem \
+        https://www.openssl.org/source/openssl-"${OPENSSL_VERSION}".tar.gz \
+        | tar xz -C /tmp && \
+        cd /tmp/openssl-"${OPENSSL_VERSION}" && \
+                ./config --prefix=/usr && \
+                make clean && make && make install && \
+        apt-get remove --purge --auto-remove -y \
+                gcc \
+                libc6-dev \
+                libssl-dev \
+                make && \
+    apt-get autoclean && apt-get --purge -y autoremove && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN update-alternatives --install "/usr/bin/java" "java" "${JRE_HOME}/bin/java" 1 && \
+    update-alternatives --install "/usr/bin/javac" "javac" "${JAVA_HOME}/bin/javac" 1 && \
+    update-alternatives --set java "${JRE_HOME}/bin/java" && \
+    update-alternatives --set javac "${JAVA_HOME}/bin/javac"
+```
+
 ## 示例 tomcat容器
 ```
-FROM isuper/java-oracle:server_jre_latest
+FROM liubo6/java-oracle:server_jre_8
 MAINTAINER liubo <917551811@qq.com>
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
