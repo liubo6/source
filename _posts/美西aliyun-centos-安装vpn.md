@@ -59,11 +59,11 @@ vim /etc/sysctl.conf
 或者service pptpd start
 ```
 我们的VPN已经可以拨号登录，但是还不能访问任何网页
-47.88.18.25 （自己真实地址）
+
 ## 启动iptables和nat转发功能
 ```
 /sbin/service iptables start
-iptables -t nat -A POSTROUTING    -s 192.168.0.0/24 -j SNAT --to-source  47.88.25.215
+iptables -t nat -A POSTROUTING    -s 192.168.0.0/24 -j SNAT --to-source  192.168.1.25 (192.168.1.25 改成自己真实ip地址)
 #保存iptables的转发规则
 /etc/init.d/iptables save
 #重新启动iptables
